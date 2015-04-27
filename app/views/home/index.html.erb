@@ -1,0 +1,7 @@
+
+<% if user_signed_in? %>
+	<%= "logged in!!" %>
+	<%= link_to 'Go to Technologies', technologies_path %>
+<% else %>
+	<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+<% end %>
