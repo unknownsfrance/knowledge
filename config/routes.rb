@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
   resources :technologies
-  #resources :users 
   get 'users/sign_in' => 'users#sign_in'
   get 'users/sign_out' => 'users#sign_out'
   
   root 'home#index'
-  post '/ajax/technologies/new' => 'technologies#new' 
+  # post '/ajax/technologies/new' => 'technologies#new' 
+  
+  # Search 
+  get 'search' => 'search#index'
+  get 'search/results' => 'search#results'
   
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }#, :path => 'users', :path_names => { :sign_in => 'login', :sign_up => 'login', :sign_out => 'logout' }
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

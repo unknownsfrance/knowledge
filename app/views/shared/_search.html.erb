@@ -1,7 +1,12 @@
 <div class="col-xs-12">
 	<div class="panel panel-default">
   		<div class="panel-body">
-	    	Search is coming soon...
+	    	<form class="form-inline" method="GET" action="<%= url_for(controller: 'search', action: 'results') %>">
+			  <div class="form-group">
+			    <input type="text" name="q" class="form-control" id="searchInput" placeholder="What are you looking for?" value="<%= @query %>">
+			  </div>
+			  <button type="submit" class="btn btn-default">Rechercher</button>
+			</form>
 	 	</div>
 	</div>
 </div>

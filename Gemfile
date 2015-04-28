@@ -9,6 +9,9 @@ gem 'autoprefixer-rails'
 gem 'devise'
 gem 'omniauth-google-oauth2'
 
+gem 'sunspot_rails'
+gem 'sunspot_solr'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record

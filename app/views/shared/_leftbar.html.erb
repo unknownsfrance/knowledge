@@ -1,15 +1,9 @@
-	<div class="col-xs-3">
-		<p>
-			<%= image_tag(current_user.picture) %>
-			<%= current_user.firstname + ' ' + current_user.lastname %>
-			<%= link_to 'Sign Out', 'users/sign_out' %>
-		</p>
-		<h5><b>My search history</b></h5>
-		<ul>
-			<li>dsfkjhsdkj</li>
-			<li>dsfkjhsdkj</li>
-			<li>dsfkjhsdkj</li>
-			<li>dsfkjhsdkj</li>
-		</ul>
+	<div class="col-xs-3" id="leftbar">
+		<div class="row">
+			<p class="blocktext"><%= image_tag(current_user.picture) %></p>
+			<p class="blocktext"><%= current_user.firstname + ' ' + current_user.lastname %> (<%= link_to 'Sign Out', 'users/sign_out' %>)</p>
+		</div>
+		<%= render 'shared/mysearchhistory' %>
+		<%= render 'shared/lastcontrib' %>
 	</div>
 	

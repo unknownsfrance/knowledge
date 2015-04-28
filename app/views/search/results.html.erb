@@ -1,0 +1,21 @@
+<%= @search.total.to_s + " results for " %> <i><b><%= @query %></b></i>
+
+<table class="table table-hover">
+	<thead>
+	    <tr>
+	    	<th>Title</th>
+	    	<th>Author</th>
+	    	<th>Category</th>
+	    	<th colspan="3"></th>
+	    </tr>
+	</thead>
+	<tbody>
+		<% @search.results.each do |result| %>
+		<tr>
+			<td><%= result[:name] %></td>
+			<td><%= @users[result[:user_id]] %></td>
+			<td><%= 'Technology' %></td>
+			<td><%= 'Show' %></td>
+		</tr>
+		<% end %>
+</table>
