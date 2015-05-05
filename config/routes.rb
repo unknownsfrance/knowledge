@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :documents
+  resources :people
   resources :technologies
   get 'users/sign_in' => 'users#sign_in'
   get 'users/sign_out' => 'users#sign_out'

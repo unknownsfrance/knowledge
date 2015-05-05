@@ -1,29 +1,18 @@
 $(document).ready(function() {
-	
-	$("#tabs-container").tabsX({
-	    enableCache: true,
-	    maxTitleLength: 10,
-	    successCallback: {
-	        'technology': function (data, status, jqXHR) {
-	        	console.log("yeah 1!!");
-	        },
-	        'enterprise': function (data, status, jqXHR) {
-	        	console.log("yeah 2!!");
-	        },
-	        'people': function (data, status, jqXHR) {
-	        	console.log("yeah 3!!");
-	        }        
-	    },
-	    errorCallback: {
-	        'technology': function (data, status, jqXHR) {
-	        	console.log("pas yeah 1!!");
-	        },
-	        'enterprise': function (data, status, jqXHR) {
-	        	console.log("pas yeah 2!!");
-	        },
-	        'people': function (data, status, jqXHR) {
-	        	console.log("pas yeah 3!!");
-	        }        
-	    },
-	});
+	$('#showResultModal').on('show.bs.modal', function (event) {
+		  var button = $(event.relatedTarget)
+		  var jsonid = button.data('jsonid')
+		  var current_data = datajson[jsonid]
+		  
+		  var modal = $(this)
+		  modal.find('.modal-title').text('Technology Detail: ' + current_data.name)
+		  modal.find('.modal-body').html(test('Name', current_data.name))
+		  modal.find('.modal-body').append(test('Url', current_data.url))
+		  modal.find('.modal-body').append(test('Description', current_data.description))
+		})
+
 });
+
+var test = function (attribute, value) {
+	return '<div><strong>' + attribute + ':</strong> ' + value + '</div>'
+}

@@ -11,7 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150428150746) do
+ActiveRecord::Schema.define(version: 20150505104330) do
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "location",    limit: 255
+    t.string   "title",       limit: 255
+    t.text     "description", limit: 65535
+    t.string   "tags",        limit: 255
+    t.integer  "user_id",     limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "category",    limit: 4
+  end
+
+  add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
+
+  create_table "people", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.string   "url",          limit: 255
+    t.text     "description",  limit: 65535
+    t.integer  "nb_people",    limit: 4
+    t.text     "adresse",      limit: 65535
+    t.string   "contact_name", limit: 255
+    t.string   "files",        limit: 255
+    t.string   "tags",         limit: 255
+    t.string   "expertises",   limit: 255
+    t.integer  "category",     limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "user_id",      limit: 4
+  end
+
+  add_index "people", ["user_id"], name: "index_people_on_user_id", using: :btree
 
   create_table "technologies", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -47,5 +78,7 @@ ActiveRecord::Schema.define(version: 20150428150746) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "documents", "users"
+  add_foreign_key "people", "users"
   add_foreign_key "technologies", "users"
 end
