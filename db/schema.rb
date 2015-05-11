@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505104330) do
+ActiveRecord::Schema.define(version: 20150506155436) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "location",    limit: 255
     t.string   "title",       limit: 255
     t.text     "description", limit: 65535
-    t.string   "tags",        limit: 255
     t.integer  "user_id",     limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -34,7 +33,6 @@ ActiveRecord::Schema.define(version: 20150505104330) do
     t.text     "adresse",      limit: 65535
     t.string   "contact_name", limit: 255
     t.string   "files",        limit: 255
-    t.string   "tags",         limit: 255
     t.string   "expertises",   limit: 255
     t.integer  "category",     limit: 4
     t.datetime "created_at",                 null: false
@@ -44,11 +42,27 @@ ActiveRecord::Schema.define(version: 20150505104330) do
 
   add_index "people", ["user_id"], name: "index_people_on_user_id", using: :btree
 
+  create_table "tag_assocs", force: :cascade do |t|
+    t.integer  "tag_id",       limit: 4
+    t.integer  "element_id",   limit: 4
+    t.string   "element_type", limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "tag_assocs", ["element_type", "element_id"], name: "index_tag_assocs_on_element_type_and_element_id", using: :btree
+  add_index "tag_assocs", ["tag_id"], name: "index_tag_assocs_on_tag_id", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "tag",        limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "technologies", force: :cascade do |t|
     t.string   "name",        limit: 255
     t.string   "url",         limit: 255
     t.text     "description", limit: 65535
-    t.string   "tags",        limit: 255
     t.string   "files",       limit: 255
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
@@ -80,5 +94,6 @@ ActiveRecord::Schema.define(version: 20150505104330) do
 
   add_foreign_key "documents", "users"
   add_foreign_key "people", "users"
+  add_foreign_key "tag_assocs", "tags"
   add_foreign_key "technologies", "users"
 end

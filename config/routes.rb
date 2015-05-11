@@ -1,17 +1,21 @@
 Rails.application.routes.draw do
+  root 'home#index'
+  
+  # Main models
   resources :documents
   resources :people
   resources :technologies
-  get 'users/sign_in' => 'users#sign_in'
-  get 'users/sign_out' => 'users#sign_out'
   
-  root 'home#index'
-  # post '/ajax/technologies/new' => 'technologies#new' 
+  # tags JSON only 
+  resources :tags, :only => [:index], :defaults  => { :format  => 'json' }
   
   # Search 
   get 'search' => 'search#index'
   get 'search/results' => 'search#results'
-  
+
+  # User interactions 
+  get 'users/sign_in' => 'users#sign_in'
+  get 'users/sign_out' => 'users#sign_out'
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }#, :path => 'users', :path_names => { :sign_in => 'login', :sign_up => 'login', :sign_out => 'logout' }
   
   # The priority is based upon order of creation: first created -> highest priority.

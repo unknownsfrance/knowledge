@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tag_id: 
+  element_id: 
+  element_type: Element
+
+two:
+  tag_id: 
+  element_id: 
+  element_type: Element

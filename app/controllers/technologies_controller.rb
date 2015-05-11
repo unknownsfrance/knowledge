@@ -5,7 +5,7 @@ class TechnologiesController < ApplicationController
   # GET /technologies
   # GET /technologies.json
   def index
-    @technologies = Technology.all
+    @technologies = Technology.All
   end
 
   # GET /technologies/1
@@ -42,7 +42,7 @@ class TechnologiesController < ApplicationController
 
   # PATCH/PUT /technologies/1
   # PATCH/PUT /technologies/1.json
-  def update
+  def update 
     respond_to do |format|
       if @technology.update(technology_params)
         flash[:success] = 'Technology was successfully updated.'

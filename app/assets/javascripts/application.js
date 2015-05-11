@@ -12,8 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require bootstrap-tabs-x
+//= require tag-it
 //= require unknowns-knowledge.js
 //= require_tree .
