@@ -22,4 +22,4 @@
 !.elasticbeanstalk/*.global.yml
 
 # Ignore SolR indexes 
-/solr/data/*
+/solr/*
