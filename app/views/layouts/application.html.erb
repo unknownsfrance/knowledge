@@ -22,7 +22,9 @@
 				<div class="col-xs-9">
 					<!-- Search Area -->
 					<%= render 'shared/search' %>
-					<%= render 'shared/createnav' %>
+					<% if params[:q] %>
+						<%= render 'shared/filternav' %>
+					<% end %>
 					
 					<!-- Main Content // Create -->
 					<div class="col-xs-12">

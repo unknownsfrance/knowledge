@@ -26,6 +26,7 @@ class TechnologiesController < ApplicationController
   # POST /technologies.json
   def create
     @technology = Technology.new(technology_params)
+    @technology.user_id = current_user.id
 
     respond_to do |format|
       if @technology.save

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506155436) do
+ActiveRecord::Schema.define(version: 20150511144745) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "location",    limit: 255
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(version: 20150506155436) do
   end
 
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
+
+  create_table "ideas", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.text     "description", limit: 65535
+    t.string   "files",       limit: 255
+    t.integer  "user_id",     limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "ideas", ["user_id"], name: "index_ideas_on_user_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "name",         limit: 255
@@ -93,6 +104,7 @@ ActiveRecord::Schema.define(version: 20150506155436) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   add_foreign_key "documents", "users"
+  add_foreign_key "ideas", "users"
   add_foreign_key "people", "users"
   add_foreign_key "tag_assocs", "tags"
   add_foreign_key "technologies", "users"

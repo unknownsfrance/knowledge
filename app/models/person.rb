@@ -7,7 +7,6 @@ class Person < ActiveRecord::Base
   after_save :save_tags
   has_many :tag_assoc, :as => :element
   
-  
   searchable do
     text :name, :description, :tags, :contact_name, :expertises 
   end 
