@@ -1,5 +1,4 @@
-$(document).ready(function() {
-	console.log('test1');
+var loadfunc = function () {
     $(".taggable").tagit({
 	   	caseSensitive: false,
 	  	autocomplete: {
@@ -9,7 +8,6 @@ $(document).ready(function() {
 		}
 	});
     
-	console.log('test2');
 	$('#showResultModal').on('show.bs.modal', function (event) {
 	  var button = $(event.relatedTarget)
 	  var jsonid = button.data('jsonid')
@@ -21,7 +19,10 @@ $(document).ready(function() {
 	  modal.find('.modal-body').append(test('Url', current_data.url))
 	  modal.find('.modal-body').append(test('Description', current_data.description))
 	});
-});
+}
+
+$(document).on("page:load", loadfunc);
+$(document).ready(loadfunc);
 
 var test = function (attribute, value) {
 	return '<div><strong>' + attribute + ':</strong> ' + value + '</div>'
