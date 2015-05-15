@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150511144745) do
+ActiveRecord::Schema.define(version: 20150515081935) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "location",    limit: 255
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 20150511144745) do
   end
 
   add_index "documents", ["user_id"], name: "index_documents_on_user_id", using: :btree
+
+  create_table "elements_assocs", force: :cascade do |t|
+    t.integer  "element1_id",   limit: 4
+    t.string   "element1_type", limit: 255
+    t.integer  "element2_id",   limit: 4
+    t.string   "element2_type", limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "elements_assocs", ["element1_type", "element1_id"], name: "index_elements_assocs_on_element1_type_and_element1_id", using: :btree
+  add_index "elements_assocs", ["element2_type", "element2_id"], name: "index_elements_assocs_on_element2_type_and_element2_id", using: :btree
 
   create_table "ideas", force: :cascade do |t|
     t.string   "name",        limit: 255

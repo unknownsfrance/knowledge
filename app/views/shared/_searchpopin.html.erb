@@ -1,0 +1,13 @@
+<div class="col-xs-12">
+	<div class="col-xs-12">
+    	<form class="form-inline" id="searchFormAjax" method="GET" action="<%= url_for(controller: 'search', action: 'relationmodule') %>">
+		  Search Content: 
+		  <div class="form-group">
+		    <input type="text" name="q" class="form-control" id="searchInput" placeholder="What are you looking for?" value="<%= @query %>">
+		  </div>
+		  <button type="submit" class="btn btn-default">Search</button>
+		  <input type="hidden" name="itemtype" value="<%= @itemtype %>">
+		  <input type="hidden" name="itemid" value="<%= @itemid %>">
+		</form>
+	</div>
+</div>

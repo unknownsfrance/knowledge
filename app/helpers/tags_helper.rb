@@ -1,8 +1,5 @@
 module TagsHelper
   def self.updateTagsForModels model, tags
-    puts '---------> '
-    #puts model 
-    
     existing_tags = Hash.new
     
     # Create missing tags 
@@ -10,8 +7,7 @@ module TagsHelper
     Tag.where(:tag => tagList).each do |t|
       existing_tags[t.id] = t.tag 
     end 
-    puts existing_tags
-    puts '-----'
+    
     tagList.each do |tag|
       if existing_tags.has_value?(tag) === false 
         new_tag = Tag.create(tag: tag)

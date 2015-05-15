@@ -1,0 +1,5 @@
+<% if element.class.to_s === 'Document' %>
+	<%= link_to element.title, 'https://docs.google.com/a/unknowns.fr/file/d/' + element.location, target: '_blank' %> [<%= element.class.to_s %>]<br>
+<% else %>
+	<%= link_to element.name, controller: element.class.to_s.pluralize.downcase, action: "edit", id: element %> [<%= element.class.to_s %>]<br>
+<% end %>

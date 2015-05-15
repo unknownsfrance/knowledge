@@ -1,0 +1,41 @@
+<%= @search.total.to_s + " results for " %> <i><b><%= @query %></b></i>
+<%= @associated %>
+<table class="table table-hover">
+	<thead>
+	    <tr>
+	    	<th>Title</th>
+	    	<th>Author</th>
+	    	<th>Category</th>
+	    	<th></th>
+	    </tr>
+	</thead>
+	<tbody>
+		<% i = 0
+		@search.results.each do |result|
+			item_id = result.getCat + '_' + result[:id].to_s
+		%>
+		<tr>
+			<td><%= result[:name] %></td>
+			<td><%= @users[result[:user_id]] %></td>
+			<td><%= result.getCat %></td>
+			<td>
+				<% 
+				if @associated.include?(item_id)
+					button_class = 'do-unlink'
+					button_glyphicon = 'glyphicon-ok'
+					button_label = 'Unlink'
+				else
+					button_class = 'do-link'
+					button_glyphicon = 'glyphicon-plus'
+					button_label = 'Link'
+				end 
+				%>
+				<button id="<%= item_id %>" type="button" class="btn btn-default btn-sm assoc-button <%= button_class %>" data-target-element-type="<%= result.class.to_s %>" data-target-element-id="<%= result[:id].to_s %>">
+					<span class="glyphicon <%= button_glyphicon %>" aria-hidden="true"> <span><%= button_label %></span>
+				</button>
+			</td>
+		</tr>
+		<% i+=1
+		end %>
+</table>
+

@@ -13,12 +13,18 @@ Rails.application.routes.draw do
   # Search 
   get 'search' => 'search#index'
   get 'search/results' => 'search#results'
+  get 'search/relationmodule' => 'search#relationmodule'
+  get 'search/linkElements' => 'search#do_link_elements'
+  get 'search/unlinkElements' => 'search#do_unlink_elements'
 
   # User interactions 
   get 'users/sign_in' => 'users#sign_in'
   get 'users/sign_out' => 'users#sign_out'
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }#, :path => 'users', :path_names => { :sign_in => 'login', :sign_up => 'login', :sign_out => 'logout' }
-  
+
+  get 'home/gdrive' => 'home#test_gdrive'
+  post 'home/uploadfile' => 'home#upload_file'
+    
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
