@@ -38,7 +38,9 @@
   <div class="form-group">
   	<%= f.label "Related Content", class: 'col-sm-2 control-label' %>
   	<div class="col-sm-10">
-	  	<% @associatedElements.each do |elm| %>
+	  	<% 
+	  	if @associatedElements 
+	  		@associatedElements.each do |elm| %>
 			<%= 
 			if @idea == elm.element1
 	  			render 'components/linked_internal_element', :element => elm.element2
@@ -46,7 +48,8 @@
 	  			render 'components/linked_internal_element', :element => elm.element1 
 	  		end 
 	  		%>
-	  	<% end %>
+	  	<% end
+	  	end %>
 	  	<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @idea.class.to_s %>" data-item-id="<%= @idea[:id].to_s %>">Manage Relations</a>
 	</div>
   </div>
