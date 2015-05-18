@@ -5,8 +5,9 @@ class Technology < ActiveRecord::Base
   attr_accessor :tags 
   after_save :save_tags 
   has_many :tag_assoc, :as => :element
-  
-  #after_create :assign_user
+
+  # Added tag attribute for saving action 
+  has_many :elements_assoc, :as => :element1
   
   searchable do
     text :name, :description, :tags 
@@ -15,6 +16,10 @@ class Technology < ActiveRecord::Base
 
   def getCat
     return self.class.to_s.capitalize
+  end
+
+  def save_file upload
+    DocumentsHelper.upload_file(upload, self)
   end
   
   protected

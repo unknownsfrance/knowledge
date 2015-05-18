@@ -30,7 +30,7 @@ module DocumentsHelper
       :issuer => ENV["GOOGLE_ISSUER_EMAIL"]
     )
     
-    client.authorization.client_id = ENV["GOOGLE_CLIENT_SECRET"]
+    client.authorization.client_id = ENV["GOOGLE_APP_ID"]
     client.authorization.client_secret = ENV["GOOGLE_CLIENT_SECRET"]
     client.authorization.refresh_token = refreshToken
     

@@ -20,8 +20,9 @@ class TechnologiesController < ApplicationController
 
   # GET /technologies/1/edit
   def edit
+    @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @technology.class.to_s, :elm1id => @technology[:id].to_s })
   end
-
+  
   # POST /technologies
   # POST /technologies.json
   def create
@@ -46,6 +47,7 @@ class TechnologiesController < ApplicationController
   def update 
     respond_to do |format|
       if @technology.update(technology_params)
+        @technology.save_file(params[:upload]) if params[:upload]
         flash[:success] = 'Technology was successfully updated.'
         format.html { redirect_to @technology }
         format.json { render :show, status: :ok, location: @technology }
