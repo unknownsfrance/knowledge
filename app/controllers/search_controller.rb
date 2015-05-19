@@ -56,7 +56,7 @@ class SearchController < ApplicationController
     @query = params[:q] 
     @users = UsersHelper.all_as_array
     
-    @search = Sunspot.search Technology, Person, Idea do |query| 
+    @search = Sunspot.search Technology, Person, Idea, Document do |query| 
       query.keywords @query
     end
   end

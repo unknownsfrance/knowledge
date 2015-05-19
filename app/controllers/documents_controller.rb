@@ -1,22 +1,33 @@
 class DocumentsController < ApplicationController
   before_action :set_document, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_associated_elements, only: [:show, :edit]
+  
   # GET /documents
   # GET /documents.json
   def index
     @documents = Document.all
   end
-
+  
   # GET /documents/1
   # GET /documents/1.json
   def show
+    if params[:ajax]
+      render layout: 'ajax'
+    end
   end
-
+  
   # GET /documents/new
   def new
     @document = Document.new
+    if params[:type] == 'article'
+      @document.category = :article
+    elsif params[:type] == 'file'
+      @document.category = :file
+    else 
+      raise ArgumentError, 'Document type not specified'
+    end
   end
-
+  
   # GET /documents/1/edit
   def edit
   end
@@ -43,6 +54,7 @@ class DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @document.update(document_params)
+        @document.save_file(params[:upload]) if params[:upload]
         format.html { redirect_to @document, notice: 'Document was successfully updated.' }
         format.json { render :show, status: :ok, location: @document }
       else
@@ -67,7 +79,11 @@ class DocumentsController < ApplicationController
     def set_document
       @document = Document.find(params[:id])
     end
-
+    
+    def set_associated_elements
+      @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @document.class.to_s, :elm1id => @document[:id].to_s })
+    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def document_params
       params.require(:document).permit(:location, :title, :description, :tags, :category)

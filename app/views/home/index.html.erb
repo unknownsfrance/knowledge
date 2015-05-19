@@ -3,5 +3,5 @@
 	<%= "logged in!!" %>
 	<%= link_to 'Go to Technologies', technologies_path %>
 <% else %>
-	<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+	<%= link_to image_tag('global/google-sign-in.jpg'), user_omniauth_authorize_path(:google_oauth2) %>
 <% end %>

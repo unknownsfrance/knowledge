@@ -1,4 +1,6 @@
-<%= form_for(@document, html: {class: 'form-horizontal'}) do |f| %>
+<% readonly = readonly and readonly == 'true' %>
+<%= form_for(@document, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
+  <%= f.hidden_field :category, :value => @document.category %>
   <% if @document.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@document.errors.count, "error") %> prohibited this document from being saved:</h2>
@@ -10,41 +12,82 @@
       </ul>
     </div>
   <% end %>
-
+  <% if @document.is_article? %>
   <div class="field form-group">
     <%= f.label :location, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :location, class: 'form-control' %>
+    	<%= f.text_field :location, class: 'form-control', readonly: readonly %>
     </div>
   </div>
+  <% end %>
+  <% if @document.is_file? %>
+  <div class="form-group">
+    <%= f.label :file, class: 'col-sm-2 control-label' %>
+    <% if @document.location %>
+  		<%= link_to @document.title, 'https://docs.google.com/a/unknowns.fr/file/d/' + @document.location, target: '_blank' %>
+  	<% end %>
+  	<% if not readonly %>
+  		<%= file_field 'upload', 'datafile' %>
+  	<% end %>
+  </div>
+  <% end %>
   <div class="field form-group">
     <%= f.label :title, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :title, class: 'form-control' %>
+    	<%= f.text_field :title, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :description, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_area :description, class: 'form-control' %>
+    	<%= f.text_area :description, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :tags, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :tags, class: 'form-control' %>
-    </div>
+    	<% if not readonly %>
+    		<input type="text" class="form-control taggable" name="document[tags]" id="tags" value="<%
+			@document.tag_assoc.each do |ta| %>
+				<%= ta.tag.tag %>, 
+		  	<% end %>">
+		<% else %>
+			<ul>
+			  	<% @document.tag_assoc.each do |ta| %>
+					<li><%= ta.tag.tag %></li>
+			  	<% end %>
+		  	</ul>
+		<% end %>
+   	</div>
   </div>
-  <div class="field form-group">
-    <%= f.label :user, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.select :user_id, options_for_select(User.all.map{|s|[s.firstname, s.id]}), class: 'form-control' %>
-    </div>
+  <div class="form-group">
+  	<%= f.label "Related Content", class: 'col-sm-2 control-label' %>
+  	<div class="col-sm-10">
+	  	<% 
+	  	if @associatedElements 
+	  		@associatedElements.each do |elm| %>
+			<%= 
+			if @document == elm.element1
+	  			render 'components/linked_internal_element', :element => elm.element2
+	  		elsif @document == elm.element2 
+	  			render 'components/linked_internal_element', :element => elm.element1 
+	  		end 
+	  		%>
+	  	<% 
+	  		end
+	  	end %>
+	  	<% if not readonly %>
+	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @document.class.to_s %>" data-item-id="<%= @document[:id].to_s %>">Manage Relations</a>
+		<% end %>
+	</div>
   </div>
+  <% if not readonly %>
   <div class="actions form-group">
 	  <div class="col-sm-offset-2 col-sm-10">
-	  	<%= f.text_field :category, :value => :file %>
 	    <%= f.submit %>
 	  </div>
   </div>
+  <% end %>
 <% end %>
+
+<%= render 'components/ajax_modal', :modal_title => 'myModal' %>
