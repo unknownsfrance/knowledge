@@ -1,4 +1,6 @@
-<%= form_for(@person, html: {class: 'form-horizontal'}) do |f| %>
+<% readonly = readonly and readonly == 'true' %>
+<%= form_for(@person, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
+  <%= f.hidden_field :category, :value => @person.category %>
   <% if @person.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
@@ -14,92 +16,98 @@
   <div class="field form-group">
     <%= f.label :name, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :name, class: 'form-control' %>
+    	<%= f.text_field :name, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :url, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :url, class: 'form-control' %>
+    	<%= f.text_field :url, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :description, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_area :description, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="field form-group">
-    <%= f.label :nb_people, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.number_field :nb_people, class: 'form-control' %>
+    	<%= f.text_area :description, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :adresse, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_area :adresse, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="field form-group">
-    <%= f.label :contact_name, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.text_field :contact_name, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="field form-group">
-    <%= f.label :files, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.text_field :files, class: 'form-control' %>
+    	<%= f.text_area :adresse, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :expertises, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :expertises, class: 'form-control' %>
+    	<%= f.text_field :expertises, class: 'form-control', readonly: readonly %>
     </div>
   </div>
+  <% if @person.is_enterprise? %>
+  <div class="field form-group">
+    <%= f.label :nb_people, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+    	<%= f.number_field :nb_people, class: 'form-control', readonly: readonly %>
+    </div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :contact_name, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+    	<%= f.text_field :contact_name, class: 'form-control', readonly: readonly %>
+    </div>
+  </div>
+  <% end %>
   <div class="field form-group">
     <%= f.label :tags, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<input type="text" class="form-control taggable" name="person[tags]" id="tags" value="<%
+    	<% if not readonly %>
+    		<input type="text" class="form-control taggable" name="person[tags]" id="tags" value="<%
 			@person.tag_assoc.each do |ta| %>
 				<%= ta.tag.tag %>, 
 		  	<% end %>">
+		<% else %>
+			<ul>
+			<% @person.tag_assoc.each do |ta| %>
+				<li><%= ta.tag.tag %></li>
+		  	<% end %>
+		  	</ul>
+		<% end %>
    	</div>
   </div>
-  <!-- 
-  <div class="field form-group">
-    <%= f.label :user, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.select :user_id, options_for_select(User.all.map{|s|[s.firstname, s.id]}), class: 'form-control' %>
-    </div>
+  <% if not readonly %>
+  <div class="form-group">
+    <%= f.label :file, class: 'col-sm-2 control-label' %>
+  	<%= file_field 'upload', 'datafile' %>
   </div>
-  --> 
+  <% end %>
+  <div class="form-group">
+  	<%= f.label "Related Content", class: 'col-sm-2 control-label' %>
+  	<div class="col-sm-10">
+	  	<% 
+	  	if @associatedElements 
+	  		@associatedElements.each do |elm| %>
+			<%= 
+			if @person == elm.element1
+	  			render 'components/linked_internal_element', :element => elm.element2
+	  		elsif @person == elm.element2 
+	  			render 'components/linked_internal_element', :element => elm.element1 
+	  		end 
+	  		%>
+	  	<% 
+	  		end
+	  	end %>
+	  	<% if not readonly %>
+	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @person.class.to_s %>" data-item-id="<%= @person[:id].to_s %>">Manage Relations</a>
+		<% end %>
+	</div>
+  </div>
+  <% if not readonly %>
   <div class="actions form-group">
   	 <div class="col-sm-offset-2 col-sm-10">
-	    <%= f.hidden_field :category, :value => :enterprise %>
 	    <%= f.submit %>
 	 </div>
   </div>
+  <% end %>
 <% end %>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<%= render 'components/ajax_modal', :modal_title => 'myModal' %>

@@ -1,29 +1,14 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @technology.name %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @technology.url %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @technology.description %>
-</p>
-
-<p>
-  <strong>Tags:</strong>
-  <%= @technology.tags %>
-</p>
-
-<p>
-  <strong>Files:</strong>
-  <%= @technology.files %>
-</p>
-
-<%= link_to 'Edit', edit_technology_path(@technology) %> |
-<%= link_to 'Back', technologies_path %>
+	<% if params[:ajax] != 'true' %>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Show Technology</h3>
+		</div>
+	<% end %>
+		<div class="panel-body">
+			<div class="col-xs-12">
+				<%= render 'form', :readonly => 'true' %>
+			</div>
+		</div>
+	<% if params[:ajax] != 'true' %>
+	</div>
+	<% end %>

@@ -1,6 +1,7 @@
 class PeopleController < ApplicationController
   before_action :authenticate_user! 
   before_action :set_person, only: [:show, :edit, :update, :destroy]
+  before_action :set_associated_elements, only: [:show, :edit]
 
   # GET /people
   # GET /people.json
@@ -11,11 +12,21 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
+    if params[:ajax]
+      render layout: 'ajax'
+    end
   end
 
   # GET /people/new
   def new
     @person = Person.new
+    if params[:type] == 'enterprise'
+      @person.category = :enterprise
+    elsif params[:type] == 'freelance'
+      @person.category = :freelance
+    else 
+      raise ArgumentError, 'Person type not specified'
+    end
   end
 
   # GET /people/1/edit
@@ -44,6 +55,7 @@ class PeopleController < ApplicationController
   def update
     respond_to do |format|
       if @person.update(person_params)
+        @person.save_file(params[:upload]) if params[:upload]
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -67,6 +79,10 @@ class PeopleController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_person
       @person = Person.find(params[:id])
+    end
+    
+    def set_associated_elements
+      @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @person.class.to_s, :elm1id => @person[:id].to_s })
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

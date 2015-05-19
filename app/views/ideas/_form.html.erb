@@ -1,3 +1,4 @@
+<% readonly = readonly and readonly == 'true' %>
 <%= form_for(@idea, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
   <% if @idea.errors.any? %>
     <div id="error_explanation">
@@ -13,28 +14,38 @@
   <div class="field form-group">
     <%= f.label :name, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_field :name, class: 'form-control' %>
+    	<%= f.text_field :name, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :description, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_area :description, class: 'form-control' %>
+    	<%= f.text_area :description, class: 'form-control', readonly: readonly %>
     </div>
   </div>
   <div class="field form-group">
     <%= f.label :tags, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<input type="text" class="form-control taggable" name="idea[tags]" id="tags" value="<%
+    	<% if not readonly %>
+    		<input type="text" class="form-control taggable" name="idea[tags]" id="tags" value="<%
 			@idea.tag_assoc.each do |ta| %>
 				<%= ta.tag.tag %>, 
 		  	<% end %>">
+		<% else %>
+			<ul>
+			  	<% @idea.tag_assoc.each do |ta| %>
+					<li><%= ta.tag.tag %></li>
+			  	<% end %>
+		  	</ul>
+		<% end %>
    	</div>
   </div>
+  <% if not readonly %>
   <div class="form-group">
     <%= f.label :file, class: 'col-sm-2 control-label' %>
   	<%= file_field 'upload', 'datafile' %>
   </div>
+  <% end %>
   <div class="form-group">
   	<%= f.label "Related Content", class: 'col-sm-2 control-label' %>
   	<div class="col-sm-10">
@@ -48,16 +59,21 @@
 	  			render 'components/linked_internal_element', :element => elm.element1 
 	  		end 
 	  		%>
-	  	<% end
+	  	<% 
+	  		end
 	  	end %>
-	  	<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @idea.class.to_s %>" data-item-id="<%= @idea[:id].to_s %>">Manage Relations</a>
+	  	<% if not readonly %>
+	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @idea.class.to_s %>" data-item-id="<%= @idea[:id].to_s %>">Manage Relations</a>
+		<% end %>
 	</div>
   </div>
+  <% if not readonly %>
   <div class="actions form-group">
 	  <div class="col-sm-offset-2 col-sm-10">
 	    <%= f.submit %>
 	  </div>
   </div>
+  <% end %>
 <% end %>
 
-<%= render 'components/relation_modal' %>
+<%= render 'components/ajax_modal', :modal_title => 'myModal' %>

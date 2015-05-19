@@ -1,6 +1,7 @@
 class TechnologiesController < ApplicationController
   before_action :authenticate_user! 
   before_action :set_technology, only: [:show, :edit, :update, :destroy]
+  before_action :set_associated_elements, only: [:show, :edit]
   
   # GET /technologies
   # GET /technologies.json
@@ -11,6 +12,9 @@ class TechnologiesController < ApplicationController
   # GET /technologies/1
   # GET /technologies/1.json
   def show
+    if params[:ajax]
+      render layout: 'ajax'
+    end
   end
 
   # GET /technologies/new
@@ -20,7 +24,6 @@ class TechnologiesController < ApplicationController
 
   # GET /technologies/1/edit
   def edit
-    @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @technology.class.to_s, :elm1id => @technology[:id].to_s })
   end
   
   # POST /technologies
@@ -74,6 +77,10 @@ class TechnologiesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_technology
       @technology = Technology.find(params[:id])
+    end
+    
+    def set_associated_elements
+      @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @technology.class.to_s, :elm1id => @technology[:id].to_s })
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

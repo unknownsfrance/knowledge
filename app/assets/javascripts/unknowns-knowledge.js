@@ -41,6 +41,14 @@ var loadfunc = function () {
 			});
 		});
 	});
+	
+	$('#showPopin').on('shown.bs.modal', function (event) {
+		var button = $(event.relatedTarget);
+		$('#showPopin #myModalLabel').html('Detail for ' + button.data('item-type') + ' (' + button.data('item-id') + ')')
+	});
+	$('#showPopin').on('hidden.bs.modal', function () {
+		$(this).removeData('bs.modal');
+	});
 };
 var bind_link_values = function (elmType, elmId) {
 	$('.assoc-button').click(function ( event ) {

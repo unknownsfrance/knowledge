@@ -1,6 +1,7 @@
 class IdeasController < ApplicationController
   before_action :authenticate_user! 
   before_action :set_idea, only: [:show, :edit, :update, :destroy]
+  before_action :set_associated_elements, only: [:show, :edit]
 
   # GET /ideas
   # GET /ideas.json
@@ -11,6 +12,9 @@ class IdeasController < ApplicationController
   # GET /ideas/1
   # GET /ideas/1.json
   def show
+    if params[:ajax]
+      render layout: 'ajax'
+    end
   end
 
   # GET /ideas/new
@@ -20,7 +24,6 @@ class IdeasController < ApplicationController
   
   # GET /ideas/1/edit
   def edit
-    @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @idea.class.to_s, :elm1id => @idea[:id].to_s })
   end
   
   # POST /ideas
@@ -66,13 +69,17 @@ class IdeasController < ApplicationController
   end
   
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_idea
-    @idea = Idea.find(params[:id])
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def idea_params
-    params.require(:idea).permit(:name, :description, :tags, :file)
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_idea
+      @idea = Idea.find(params[:id])
+    end
+    
+    def set_associated_elements
+      @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @idea.class.to_s, :elm1id => @idea[:id].to_s })
+    end
+  
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def idea_params
+      params.require(:idea).permit(:name, :description, :tags, :file)
+    end
 end

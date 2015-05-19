@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
-  resources :ideas
+  
   root 'home#index'
   
   # Main models
-  resources :documents
-  resources :people
-  resources :technologies
+  resources :documents, :except => [:index]
+  resources :people, :except => [:new, :index]
+  resources :technologies, :except => [:index]
+  resources :ideas, :except => [:index]
   
   # tags JSON only 
   resources :tags, :only => [:index], :defaults  => { :format  => 'json' }
+  
+  # People specific routes 
+  get 'enterprise/new' => 'people#new', :type => 'enterprise'
+  get 'freelance/new' => 'people#new', :type => 'freelance'
   
   # Search 
   get 'search' => 'search#index'
