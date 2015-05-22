@@ -69,7 +69,7 @@ class TechnologiesController < ApplicationController
     @technology.destroy
     respond_to do |format|
       flash[:success] = 'Technology was successfully destroyed.'
-      format.html { redirect_to technologies_url }
+      format.html { redirect_to new_technology_path }
       format.json { head :no_content }
     end
   end

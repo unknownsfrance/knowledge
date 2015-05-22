@@ -64,7 +64,7 @@ class IdeasController < ApplicationController
   def destroy
     @idea.destroy
     respond_to do |format|
-      format.html { redirect_to ideas_url, notice: 'Idea was successfully destroyed.' }
+      format.html { redirect_to new_idea_path, notice: 'Idea was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -14,11 +14,11 @@ var loadfunc = function () {
 	  var current_data = datajson[jsonid]
 	  
 	  var modal = $(this)
-	  modal.find('.modal-title').text('Technology Detail: ' + current_data.name)
-	  modal.find('.modal-body').html(test('Name', current_data.name))
-	  modal.find('.modal-body').append(test('Url', current_data.url))
-	  modal.find('.modal-body').append(test('Description', current_data.description))
-	});
+		  modal.find('.modal-title').text('Technology Detail: ' + current_data.name)
+		  modal.find('.modal-body').html(test('Name', current_data.name))
+		  modal.find('.modal-body').append(test('Url', current_data.url))
+		  modal.find('.modal-body').append(test('Description', current_data.description))
+		});
 	
 	$('#myModal').on('shown.bs.modal', function (event) {
 		var button = $(event.relatedTarget)

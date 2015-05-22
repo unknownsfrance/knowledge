@@ -80,6 +80,13 @@
     	<%= f.submit %>
     </div>
   </div>
+  <% else %>
+  	<div class="actions form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+    	<%= link_to 'Edit', edit_technology_path, class: 'btn btn-default' %>
+    	<%= link_to 'Delete', technology_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </div>
+  </div>
   <% end %>
 <% end %>
 
