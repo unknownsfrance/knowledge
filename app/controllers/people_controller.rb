@@ -22,8 +22,8 @@ class PeopleController < ApplicationController
     @person = Person.new
     if params[:type] == 'enterprise'
       @person.category = :enterprise
-    elsif params[:type] == 'freelance'
-      @person.category = :freelance
+    elsif params[:type] == 'person'
+      @person.category = :person
     else 
       raise ArgumentError, 'Person type not specified'
     end

@@ -15,7 +15,7 @@
 		 		Create Content: 
 				<%= link_to 'Technology', new_technology_path, class: 'btn btn-primary' + (controller.class.name == 'TechnologiesController' ? ' active' : '') %>
 				<%= link_to 'Enterprise', enterprise_new_path, class: 'btn btn-primary' + (controller.class.name == 'EnterprisesController' ? ' active' : '') %>
-				<%= link_to 'Freelance', freelance_new_path, class: 'btn btn-primary' + (controller.class.name == 'PeoplesController' ? ' active' : '') %>
+				<%= link_to 'People', person_new_path, class: 'btn btn-primary' + (controller.class.name == 'PeoplesController' ? ' active' : '') %>
 				<%= link_to 'Idea', new_idea_path, class: 'btn btn-primary' + (controller.class.name == 'IdeasController' ? ' active' : '') %>
 				<%= link_to 'Article', article_new_path, class: 'btn btn-primary' + (controller.class.name == 'DocumentsController' ? ' active' : '') %>
 				<%= link_to 'File', file_new_path, class: 'btn btn-primary' + (controller.class.name == 'DocumentsController' ? ' active' : '') %>

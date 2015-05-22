@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   
   # People specific routes 
   get 'enterprise/new' => 'people#new', :type => 'enterprise'
-  get 'freelance/new' => 'people#new', :type => 'freelance'
+  get 'person/new' => 'people#new', :type => 'person'
   
   # Documents specific routes 
   get 'article/new' => 'documents#new', :type => 'article'

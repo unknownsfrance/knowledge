@@ -1,5 +1,5 @@
 class Person < ActiveRecord::Base
-  enum category: [ :enterprise, :freelance ]
+  enum category: [ :enterprise, :person ]
   belongs_to :user
   
   # Added tag attribute for saving action 
@@ -18,8 +18,8 @@ class Person < ActiveRecord::Base
     return self.category.capitalize
   end
   
-  def is_freelance?
-    if self.category == 'freelance'
+  def is_person?
+    if self.category == 'person'
       return true
     end
     return false

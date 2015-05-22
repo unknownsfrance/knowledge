@@ -60,6 +60,7 @@
 		<% end %>
    	</div>
   </div>
+  <% if @document.persisted? %>
   <div class="form-group">
   	<%= f.label "Related Content", class: 'col-sm-2 control-label' %>
   	<div class="col-sm-10">
@@ -81,6 +82,7 @@
 		<% end %>
 	</div>
   </div>
+  <% end %>
   <% if not readonly %>
   <div class="actions form-group">
 	  <div class="col-sm-offset-2 col-sm-10">
