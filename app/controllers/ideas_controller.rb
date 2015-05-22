@@ -34,6 +34,7 @@ class IdeasController < ApplicationController
     
     respond_to do |format|
       if @idea.save
+        @idea.save_file(params[:upload]) if params[:upload]
         format.html { redirect_to @idea, notice: 'Idea was successfully created.' }
         format.json { render :show, status: :created, location: @idea }
       else

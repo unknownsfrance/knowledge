@@ -19,13 +19,6 @@ class DocumentsController < ApplicationController
   # GET /documents/new
   def new
     @document = Document.new
-    if params[:type] == 'article'
-      @document.category = :article
-    elsif params[:type] == 'file'
-      @document.category = :file
-    else 
-      raise ArgumentError, 'Document type not specified'
-    end
   end
   
   # GET /documents/1/edit
@@ -40,6 +33,7 @@ class DocumentsController < ApplicationController
     
     respond_to do |format|
       if @document.save
+        @document.save_file(params[:upload]) if params[:upload]
         format.html { redirect_to @document, notice: 'Document was successfully created.' }
         format.json { render :show, status: :created, location: @document }
       else

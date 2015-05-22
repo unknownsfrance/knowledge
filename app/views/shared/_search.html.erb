@@ -2,7 +2,6 @@
 	<div class="panel panel-default">
   		<div class="panel-body">
 	  		<div class="col-xs-12">
-	  			
 		    	<form class="form-inline" method="GET" action="<%= url_for(controller: 'search', action: 'results') %>">
 				  Search Content: 
 				  <div class="form-group">
@@ -17,8 +16,7 @@
 				<%= link_to 'Enterprise', enterprise_new_path, class: 'btn btn-primary' + (controller.class.name == 'EnterprisesController' ? ' active' : '') %>
 				<%= link_to 'People', person_new_path, class: 'btn btn-primary' + (controller.class.name == 'PeoplesController' ? ' active' : '') %>
 				<%= link_to 'Idea', new_idea_path, class: 'btn btn-primary' + (controller.class.name == 'IdeasController' ? ' active' : '') %>
-				<%= link_to 'Article', article_new_path, class: 'btn btn-primary' + (controller.class.name == 'DocumentsController' ? ' active' : '') %>
-				<%= link_to 'File', file_new_path, class: 'btn btn-primary' + (controller.class.name == 'DocumentsController' ? ' active' : '') %>
+				<%= link_to 'Document', new_document_path, class: 'btn btn-primary' + (controller.class.name == 'DocumentsController' ? ' active' : '') %>
 			</div>
 	 	</div>
 	</div>

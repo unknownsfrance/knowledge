@@ -1,6 +1,6 @@
 <% readonly = readonly and readonly == 'true' %>
 <%= form_for(@document, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
-  <%= f.hidden_field :category, :value => @document.category %>
+  <%= f.hidden_field :category, :value => (@document.category) ? @document.category : 'article' %>
   <% if @document.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@document.errors.count, "error") %> prohibited this document from being saved:</h2>
@@ -12,7 +12,7 @@
       </ul>
     </div>
   <% end %>
-  <% if @document.is_article? %>
+  <% if not @document.persisted? or @document.is_article? %>
   <div class="field form-group">
     <%= f.label :location, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
@@ -20,7 +20,12 @@
     </div>
   </div>
   <% end %>
-  <% if @document.is_file? %>
+  <% if not @document.persisted? %>
+	  <div class="col-sm-12" style="padding-left: 130px;">
+	  	<strong>OR</strong>
+	  </div>
+  <% end %>
+  <% if not @document.persisted? or @document.is_file? %>
   <div class="form-group">
     <%= f.label :file, class: 'col-sm-2 control-label' %>
     <% if @document.location %>

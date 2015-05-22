@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root 'home#index'
   
   # Main models
-  resources :documents, :except => [:new, :index]
+  resources :documents, :except => [:index]
   resources :people, :except => [:new, :index]
   resources :technologies, :except => [:index]
   resources :ideas, :except => [:index]
@@ -13,8 +13,8 @@ Rails.application.routes.draw do
   get 'person/new' => 'people#new', :type => 'person'
   
   # Documents specific routes 
-  get 'article/new' => 'documents#new', :type => 'article'
-  get 'file/new' => 'documents#new', :type => 'file'
+  #get 'article/new' => 'documents#new', :type => 'article'
+  #get 'file/new' => 'documents#new', :type => 'file'
     
   
   # tags JSON only 

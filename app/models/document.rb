@@ -37,12 +37,13 @@ class Document < ActiveRecord::Base
     drive_id = DocumentsHelper.upload_file(upload, self, false)
     if drive_id
       self.location = drive_id
+      self.category = :file
       self.save
     end
   end
   
   protected
-  
+
   def save_tags
     TagsHelper::updateTagsForModels(self, @tags)
   end

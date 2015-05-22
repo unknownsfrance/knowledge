@@ -34,6 +34,7 @@ class TechnologiesController < ApplicationController
 
     respond_to do |format|
       if @technology.save
+        @technology.save_file(params[:upload]) if params[:upload]
         flash[:success] = 'Technology was successfully created.'
         format.html { redirect_to @technology }
         format.json { render :show, status: :created, location: @technology }

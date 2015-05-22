@@ -3,17 +3,21 @@ module TagsHelper
     existing_tags = Hash.new
     
     # Create missing tags 
-    tagList = tags.split(',').map { |t| t.squish! } 
-    Tag.where(:tag => tagList).each do |t|
-      existing_tags[t.id] = t.tag 
+    if (tags)
+      tagList = tags.split(',').map { |t| t.squish! } 
+      Tag.where(:tag => tagList).each do |t|
+        existing_tags[t.id] = t.tag 
+      end 
     end 
     
-    tagList.each do |tag|
-      if existing_tags.has_value?(tag) === false 
-        new_tag = Tag.create(tag: tag)
-        existing_tags[new_tag.id] = new_tag.tag 
+    if (tagList)
+      tagList.each do |tag|
+        if existing_tags.has_value?(tag) === false 
+          new_tag = Tag.create(tag: tag)
+          existing_tags[new_tag.id] = new_tag.tag 
+        end
       end
-    end
+    end 
     
     # Reassoc all tags 
     TagAssoc.where(:element => model).destroy_all
