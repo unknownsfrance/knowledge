@@ -1,5 +1,7 @@
 class Technology < ActiveRecord::Base
   belongs_to :user
+  enum license: [ :proprietary, :open_source, :free ]
+  enum pricing: [ :full_free, :paid, :free_and_paid, :trial_then_paid, :other ]
   
   # Added tag attribute for saving action 
   attr_accessor :tags 
@@ -13,7 +15,7 @@ class Technology < ActiveRecord::Base
     text :name, :description, :tags 
     integer :user_id
   end 
-
+  
   def getCat
     return self.class.to_s.capitalize
   end

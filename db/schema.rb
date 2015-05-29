@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150515081935) do
+ActiveRecord::Schema.define(version: 20150529152603) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "location",    limit: 255
@@ -49,21 +49,33 @@ ActiveRecord::Schema.define(version: 20150515081935) do
   add_index "ideas", ["user_id"], name: "index_ideas_on_user_id", using: :btree
 
   create_table "people", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "url",          limit: 255
-    t.text     "description",  limit: 65535
-    t.integer  "nb_people",    limit: 4
-    t.text     "adresse",      limit: 65535
-    t.string   "contact_name", limit: 255
-    t.string   "files",        limit: 255
-    t.string   "expertises",   limit: 255
-    t.integer  "category",     limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "user_id",      limit: 4
+    t.string   "name",            limit: 255
+    t.string   "url",             limit: 255
+    t.text     "description",     limit: 65535
+    t.string   "contact_name",    limit: 255
+    t.string   "files",           limit: 255
+    t.integer  "category",        limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "user_id",         limit: 4
+    t.text     "characteristics", limit: 65535
+    t.string   "firstname",       limit: 255
+    t.string   "profile",         limit: 255
+    t.integer  "company_type",    limit: 4
   end
 
   add_index "people", ["user_id"], name: "index_people_on_user_id", using: :btree
+
+  create_table "places", force: :cascade do |t|
+    t.string   "gmaps_address", limit: 255
+    t.string   "gmaps_id",      limit: 255
+    t.boolean  "is_hq",         limit: 1
+    t.integer  "person_id",     limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "places", ["person_id"], name: "index_places_on_person_id", using: :btree
 
   create_table "tag_assocs", force: :cascade do |t|
     t.integer  "tag_id",       limit: 4
@@ -83,13 +95,17 @@ ActiveRecord::Schema.define(version: 20150515081935) do
   end
 
   create_table "technologies", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "url",         limit: 255
-    t.text     "description", limit: 65535
-    t.string   "files",       limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.integer  "user_id",     limit: 4
+    t.string   "name",            limit: 255
+    t.string   "url",             limit: 255
+    t.text     "description",     limit: 65535
+    t.string   "files",           limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "user_id",         limit: 4
+    t.string   "editor",          limit: 255
+    t.integer  "license",         limit: 4
+    t.integer  "pricing",         limit: 4
+    t.text     "characteristics", limit: 65535
   end
 
   add_index "technologies", ["user_id"], name: "index_technologies_on_user_id", using: :btree
@@ -118,6 +134,7 @@ ActiveRecord::Schema.define(version: 20150515081935) do
   add_foreign_key "documents", "users"
   add_foreign_key "ideas", "users"
   add_foreign_key "people", "users"
+  add_foreign_key "places", "people"
   add_foreign_key "tag_assocs", "tags"
   add_foreign_key "technologies", "users"
 end

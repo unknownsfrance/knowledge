@@ -13,21 +13,45 @@
   <% end %>
 
   <div class="field form-group">
-    <%= f.label :name, class: 'col-sm-2 control-label' %>
+    <%= f.label :name, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_field :name, class: 'form-control', readonly: readonly  %>
+    	<%= f.text_field :name, class: 'form-control', readonly: readonly, :required => true  %>
    	</div>
   </div>
   <div class="field form-group">
-    <%= f.label :url, class: 'col-sm-2 control-label' %>
+    <%= f.label :url, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_field :url, class: 'form-control', readonly: readonly  %>
+    	<%= f.text_field :url, class: 'form-control', readonly: readonly, :required => true  %>
    	</div>
   </div>
   <div class="field form-group">
-    <%= f.label :description, class: 'col-sm-2 control-label' %>
+    <%= f.label :editor, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<%= f.text_area :description, class: 'form-control', readonly: readonly  %>
+    	<%= f.text_field :editor, class: 'form-control', readonly: readonly  %>
+   	</div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :license, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+    	<%= f.select :license, Technology.licenses.keys.to_a.map { |w| [w.humanize, w] }, { include_blank: true }, { :class => 'form-control', :disabled => readonly } %>
+   	</div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :pricing, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+    	<%= f.select :pricing, Technology.pricings.keys.to_a.map { |w| [w.humanize, w] }, { include_blank: true }, { :class => 'form-control', :disabled => readonly } %>
+   	</div>
+  </div>
+  <div class="field form-group">
+    <label class="col-sm-2 control-label required">What is this for?</label>
+    <div class="col-sm-10">
+    	<%= f.text_area :description, class: 'form-control', readonly: readonly, :required => true  %>
+   	</div>
+  </div>
+  <div class="field form-group">
+    <label class="col-sm-2 control-label required">Specificities</label>
+    <div class="col-sm-10">
+    	<%= f.text_area :characteristics, class: 'form-control', readonly: readonly, :required => true  %>
    	</div>
   </div>
   <div class="field form-group">

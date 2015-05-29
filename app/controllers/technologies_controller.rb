@@ -86,6 +86,6 @@ class TechnologiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def technology_params
-      params.require(:technology).permit(:name, :url, :description, :tags, :files)
+      params.require(:technology).permit(:name, :url, :editor, :license, :pricing, :description, :characteristics, :tags, :files)
     end
 end

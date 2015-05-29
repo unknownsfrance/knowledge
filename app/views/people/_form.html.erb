@@ -1,3 +1,4 @@
+<%= javascript_include_tag('https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places') %>
 <% readonly = readonly and readonly == 'true' %>
 <%= form_for(@person, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
   <%= f.hidden_field :category, :value => @person.category %>
@@ -14,42 +15,57 @@
   <% end %>
 
   <div class="field form-group">
-    <%= f.label :name, class: 'col-sm-2 control-label' %>
+    <%= f.label :name, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_field :name, class: 'form-control', readonly: readonly %>
+    	<%= f.text_field :name, class: 'form-control', readonly: readonly, :required => true %>
     </div>
   </div>
   <div class="field form-group">
-    <%= f.label :url, class: 'col-sm-2 control-label' %>
+    <%= f.label :url, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_field :url, class: 'form-control', readonly: readonly %>
+    	<%= f.text_field :url, class: 'form-control', readonly: readonly, :required => true %>
     </div>
   </div>
   <div class="field form-group">
-    <%= f.label :description, class: 'col-sm-2 control-label' %>
+    <%= f.label :description, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_area :description, class: 'form-control', readonly: readonly %>
+    	<%= f.text_area :description, class: 'form-control', readonly: readonly, :required => true %>
     </div>
   </div>
   <div class="field form-group">
-    <%= f.label :adresse, class: 'col-sm-2 control-label' %>
+    <%= f.label :company_type, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
-    	<%= f.text_area :adresse, class: 'form-control', readonly: readonly %>
-    </div>
+    	<%= f.select :company_type, Person.company_types.keys.to_a.map { |w| [w.humanize, w] }, { include_blank: true }, { :class => 'form-control', :required => true, :disabled => readonly } %>
+   	</div>
   </div>
   <div class="field form-group">
-    <%= f.label :expertises, class: 'col-sm-2 control-label' %>
+  	<label class="col-sm-2 control-label required">Specificities</label>
     <div class="col-sm-10">
-    	<%= f.text_field :expertises, class: 'form-control', readonly: readonly %>
-    </div>
+    	<%= f.text_area :characteristics, class: 'form-control', readonly: readonly, :required => true  %>
+   	</div>
+  </div>
+  <div class="field form-group">
+  	<label class="col-sm-2 control-label required">HQ</label>
+  	<div class="col-sm-10">
+  		<input type="text" class="form-control has-places" name="person[hq_name]" id="hq" data-target-id="hq_id" value="">
+  		<input type="text" name="person[hq_id]" id="hq_id" value="">
+  	</div>
+  </div>
+  <div class="field form-group">
+  	<label class="col-sm-2 control-label">Localizations</label>
+  	<div class="col-sm-10">
+  		<input type="text" class="form-control has-places" name="localization_field" id="localization_1" data-multiple-list-id="localizations" data-multiple-format-name="person[localizations][%i][%s]" value="">
+  	</div>
+  </div>
+  <div class="field form-group">
+  	<label class="col-sm-2 control-label"></label>
+  	<div class="col-sm-10">
+  		<ul id="localizations">
+  			
+  		</ul>
+  	</div>
   </div>
   <% if @person.is_enterprise? %>
-  <div class="field form-group">
-    <%= f.label :nb_people, class: 'col-sm-2 control-label' %>
-    <div class="col-sm-10">
-    	<%= f.number_field :nb_people, class: 'form-control', readonly: readonly %>
-    </div>
-  </div>
   <div class="field form-group">
     <%= f.label :contact_name, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">

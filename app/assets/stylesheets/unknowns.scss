@@ -3,3 +3,10 @@ p.blocktext {
     margin-right: auto;
     width: 15em
 }
+label > strong {
+	color: red;
+}
+label.required:before {
+	content:"* ";
+	color:red;
+}

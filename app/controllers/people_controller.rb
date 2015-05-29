@@ -83,7 +83,7 @@ class PeopleController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_person
@@ -93,9 +93,10 @@ class PeopleController < ApplicationController
     def set_associated_elements
       @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @person.class.to_s, :elm1id => @person[:id].to_s })
     end
-
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
-      params.require(:person).permit(:name, :url, :description, :nb_people, :adresse, :contact_name, :files, :tags, :expertises, :category)
+      params[:person][:localizations] = params[:person][:localizations].to_json
+      params.require(:person).permit(:name, :url, :company_type, :characteristics, :description, :hq_name, :hq_id, :localizations, :contact_name, :files, :tags, :category)
     end
 end

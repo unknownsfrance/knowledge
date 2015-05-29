@@ -1,5 +1,6 @@
 class Person < ActiveRecord::Base
   enum category: [ :enterprise, :person ]
+  enum company_type: [ :start_up, :agency ]
   belongs_to :user
   
   # Added tag attribute for saving action 
@@ -7,11 +8,17 @@ class Person < ActiveRecord::Base
   after_save :save_tags
   has_many :tag_assoc, :as => :element
 
+  attr_accessor :hq_name, :hq_id
+  after_save :save_hq
+  
+  attr_accessor :localizations
+  after_save :save_localizations  
+  
   # Added tag attribute for saving action 
   has_many :elements_assoc, :as => :element1
   
   searchable do
-    text :name, :description, :tags, :contact_name, :expertises 
+    text :name, :description, :tags, :contact_name, :characteristics 
   end 
   
   def getCat
@@ -36,6 +43,26 @@ class Person < ActiveRecord::Base
   end
   
   protected 
+
+  def save_hq
+    if not @hq_name.empty? and not @hq_id.empty?
+      Place.where(:person => self).destroy_all
+      Place.create(
+        :gmaps_address => @hq_name, 
+        :gmaps_id => @hq_id, 
+        :is_hq => 1, 
+        :person => self
+      )
+    end
+  end
+  
+  def save_localizations
+    #loc = JSON.stringify(eval("(" + @localizations + ")")) 
+    #@localizations.each do |k,o|
+    #  puts k, o, '-----------------'
+    #end
+    #abort()
+  end
   
   def save_tags
     TagsHelper::updateTagsForModels(self, @tags)

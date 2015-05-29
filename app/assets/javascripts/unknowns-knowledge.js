@@ -1,4 +1,6 @@
 var loadfunc = function () {
+	gmap_initalize();
+    
     $(".taggable").tagit({
 	   	caseSensitive: false,
 	  	autocomplete: {
@@ -86,6 +88,45 @@ var bind_link_values = function (elmType, elmId) {
 		}
 	});
 };
+var gmap_initalize = function () {
+	console.log('gmaps_init ok');
+	$('.has-places').keypress(function(e){
+	    if ( e.which == 13 ) {
+	    	$(this).val('');
+	    	$(this).focus();
+	    	e.preventDefault();
+	    }
+	});
+	$('.has-places').each(function () {
+		var obj_id = $(this).attr('id');
+		var autocomplete = new google.maps.places.Autocomplete(document.getElementById(obj_id));
+		google.maps.event.addListener(autocomplete, 'place_changed', function () {
+			var place = autocomplete.getPlace();
+			// Multiple Format 
+			var multiple_target = $('#' + obj_id).data('multiple-list-id');
+			var multiple_format = $('#' + obj_id).data('multiple-format-name');
+			if (multiple_target && multiple_format) {
+				var nbitem = $('#' + multiple_target).children().length;
+				var elm_id = 'place_item_' + (nbitem + 1);
+				var inputs = ' <a href="#" id="' + elm_id + '_removelink" data-remove-id="' + elm_id + '">remove</a>'
+					inputs += '<input type="text" name="' + multiple_format.replace('%i', nbitem+1).replace('%s', 'id') + '" value="' + place.place_id + '">';
+					inputs += '<input type="text" name="' + multiple_format.replace('%i', nbitem + 1).replace('%s', 'name') + '" value="' + place.formatted_address + '">'
+				$('#' + multiple_target).append('<li id="' + elm_id + '">' + place.formatted_address + inputs + '</li>');
+				$('#' + obj_id).val('');
+				$('#' + obj_id).focus();
+				// Bind click 
+				$('#' + elm_id + '_removelink').click(function ( evt ) {
+					evt.preventDefault();
+					$('#' + $(this).data('remove-id')).remove();
+				});
+			}
+			else {
+				var target_id = $('#' + obj_id).data('target-id');
+				$('#' + target_id).val(place.place_id);
+			}
+		});
+	});
+}
 
 $(document).on("page:load", loadfunc);
 $(document).ready(loadfunc);
