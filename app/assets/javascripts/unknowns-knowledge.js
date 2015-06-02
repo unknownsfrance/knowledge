@@ -19,13 +19,9 @@ var loadfunc = function () {
 			source: "/langs.json",
 		},
     	beforeTagAdded: function (event, ui) {
-    		//console.log($(this).prop('readonly'));
     		// prevent event except if we found it in the last autocomplete list
-    		//console.log('beforeAdded:' + ui.tagLabel, ui.duringInitialization);
-    		
     		var preventEvent = true;
     		if (!ui.duringInitialization) {
-    			console.log('check');
 	    		$('ul#ui-id-2 > li').each(function () {
 	    			if (ui.tagLabel == $(this).text()) {
 	    				preventEvent = false;
