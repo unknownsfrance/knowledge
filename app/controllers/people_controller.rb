@@ -92,11 +92,21 @@ class PeopleController < ApplicationController
     
     def set_associated_elements
       @associatedElements = ElementsAssoc.where('(element1_type = :elm1type AND element1_id = :elm1id) OR (element2_type = :elm1type AND element2_id = :elm1id)', { :elm1type => @person.class.to_s, :elm1id => @person[:id].to_s })
+      
+      @hq = {}
+      @localizations = {}
+      @person.place.each do |p|
+        if p.is_hq
+          @hq[p.gmaps_id] = p.gmaps_address
+        else 
+          @localizations[p.gmaps_id] = p.gmaps_address
+        end
+      end
     end
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params[:person][:localizations] = params[:person][:localizations].to_json
-      params.require(:person).permit(:name, :url, :company_type, :characteristics, :description, :hq_name, :hq_id, :localizations, :contact_name, :files, :tags, :category)
+      params.require(:person).permit(:name, :firstname, :profile, :url, :company_type, :characteristics, :description, :hq_name, :hq_id, :localizations, :contact_name, :files, :tags, :languages, :category)
     end
 end

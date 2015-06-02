@@ -17,10 +17,10 @@ Rails.application.routes.draw do
   #get 'file/new' => 'documents#new', :type => 'file'
     
   
-  # tags JSON only 
+  # tags and langs JSON only 
   resources :tags, :only => [:index], :defaults  => { :format  => 'json' }
-  
-  
+  resources :langs, :only => [:index], :defaults  => { :format  => 'json' }
+
   # Search 
   get 'search' => 'search#index'
   get 'search/results' => 'search#results'

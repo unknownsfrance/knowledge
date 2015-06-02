@@ -12,7 +12,7 @@ class Technology < ActiveRecord::Base
   has_many :elements_assoc, :as => :element1
   
   searchable do
-    text :name, :description, :tags 
+    text :name, :description, :editor, :license, :pricing, :characteristics, :tags 
     integer :user_id
   end 
   

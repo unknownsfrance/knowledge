@@ -20,6 +20,20 @@
     	<%= f.text_field :name, class: 'form-control', readonly: readonly, :required => true %>
     </div>
   </div>
+  <% if @person.is_person? %>
+  <div class="field form-group">
+    <%= f.label :first_name, class: 'col-sm-2 control-label required' %>
+    <div class="col-sm-10">
+    	<%= f.text_field :firstname, class: 'form-control', readonly: readonly, :required => true %>
+    </div>
+  </div>
+  <div class="field form-group">
+    <%= f.label :online_profile, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+    	<%= f.text_field :profile, class: 'form-control', readonly: readonly %>
+    </div>
+  </div>
+  <% else %>
   <div class="field form-group">
     <%= f.label :url, class: 'col-sm-2 control-label required' %>
     <div class="col-sm-10">
@@ -38,34 +52,73 @@
     	<%= f.select :company_type, Person.company_types.keys.to_a.map { |w| [w.humanize, w] }, { include_blank: true }, { :class => 'form-control', :required => true, :disabled => readonly } %>
    	</div>
   </div>
+  <% end %>
   <div class="field form-group">
   	<label class="col-sm-2 control-label required">Specificities</label>
     <div class="col-sm-10">
     	<%= f.text_area :characteristics, class: 'form-control', readonly: readonly, :required => true  %>
    	</div>
   </div>
+  <% 
+  gm_id = ''
+  gm_label = ''
+  if @hq and @hq.count
+  	@hq.each do |k, v|
+  	  gm_id = k
+  	  gm_label = v
+  	end
+  end
+  %>
   <div class="field form-group">
   	<label class="col-sm-2 control-label required">HQ</label>
   	<div class="col-sm-10">
-  		<input type="text" class="form-control has-places" name="person[hq_name]" id="hq" data-target-id="hq_id" value="">
-  		<input type="text" name="person[hq_id]" id="hq_id" value="">
+  		<input type="text" class="form-control has-places" name="person[hq_name]" id="hq" data-target-id="hq_id" value="<%= gm_label %>" required="required"<% if readonly %> readonly="readonly"<% end %>>
+  		<input type="hidden" name="person[hq_id]" id="hq_id" value="<%= gm_id %>" required="required">
   	</div>
   </div>
+  <% if @person.is_person? %>
+  <div class="field form-group">
+    <%= f.label :languages, class: 'col-sm-2 control-label' %>
+    <div class="col-sm-10">
+		<input type="text" class="form-control languagable" name="person[languages]" id="languages" value="<% 
+		@person.langs.each do |l| %>
+			<%= l.name %>, 
+		<% end %>"<% if readonly %> readonly="readonly"<% end %>>
+   	</div>
+  </div>
+  <% else %>
+  <% if not readonly %>
   <div class="field form-group">
   	<label class="col-sm-2 control-label">Localizations</label>
   	<div class="col-sm-10">
   		<input type="text" class="form-control has-places" name="localization_field" id="localization_1" data-multiple-list-id="localizations" data-multiple-format-name="person[localizations][%i][%s]" value="">
   	</div>
   </div>
+  <% end %>
   <div class="field form-group">
-  	<label class="col-sm-2 control-label"></label>
+  	<label class="col-sm-2 control-label"><% if readonly %>Localizations<% end %></label>
   	<div class="col-sm-10">
   		<ul id="localizations">
-  			
+  			<% 
+			  if @localizations and @localizations.count
+			  	#nbitem = 0
+			  	@localizations.each do |k, v|
+			  		#nbitem += 1
+					elm_id = 'place_item_' + k %>
+					
+			<li id="<%= elm_id %>">
+				<%= v %>
+				<a href="#" id="<%= elm_id %>_removelink" data-remove-id="<%= elm_id %>">remove</a>
+				<input type="hidden" name="person[localizations][<%= k %>][id]" value="<%= k %>">
+				<input type="hidden" name="person[localizations][<%= k %>][name]" value="<%= v %>">
+			</li>
+			<%
+			  	end
+			  end
+			%>
   		</ul>
   	</div>
   </div>
-  <% if @person.is_enterprise? %>
   <div class="field form-group">
     <%= f.label :contact_name, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
@@ -76,18 +129,10 @@
   <div class="field form-group">
     <%= f.label :tags, class: 'col-sm-2 control-label' %>
     <div class="col-sm-10">
-    	<% if not readonly %>
-    		<input type="text" class="form-control taggable" name="person[tags]" id="tags" value="<%
-			@person.tag_assoc.each do |ta| %>
-				<%= ta.tag.tag %>, 
-		  	<% end %>">
-		<% else %>
-			<ul>
-			<% @person.tag_assoc.each do |ta| %>
-				<li><%= ta.tag.tag %></li>
-		  	<% end %>
-		  	</ul>
-		<% end %>
+		<input type="text" class="form-control taggable" name="person[tags]" id="tags" value="<%
+		@person.tag_assoc.each do |ta| %>
+			<%= ta.tag.tag %>, 
+	  	<% end %>"<% if readonly %> readonly="readonly"<% end %>>
    	</div>
   </div>
   <% if not readonly %>

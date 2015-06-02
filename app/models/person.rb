@@ -7,18 +7,23 @@ class Person < ActiveRecord::Base
   attr_accessor :tags 
   after_save :save_tags
   has_many :tag_assoc, :as => :element
-
+  
   attr_accessor :hq_name, :hq_id
   after_save :save_hq
   
   attr_accessor :localizations
-  after_save :save_localizations  
+  after_save :save_localizations
+  has_many :place
+  
+  attr_accessor :languages
+  after_save :save_langs
+  has_and_belongs_to_many :langs
   
   # Added tag attribute for saving action 
   has_many :elements_assoc, :as => :element1
   
   searchable do
-    text :name, :description, :tags, :contact_name, :characteristics 
+    text :name, :firstname, :description, :characteristics, :company_type, :contact_name, :tags
   end 
   
   def getCat
@@ -43,10 +48,10 @@ class Person < ActiveRecord::Base
   end
   
   protected 
-
+  
   def save_hq
     if not @hq_name.empty? and not @hq_id.empty?
-      Place.where(:person => self).destroy_all
+      Place.where(:person => self, :is_hq => 1).destroy_all
       Place.create(
         :gmaps_address => @hq_name, 
         :gmaps_id => @hq_id, 
@@ -57,11 +62,29 @@ class Person < ActiveRecord::Base
   end
   
   def save_localizations
-    #loc = JSON.stringify(eval("(" + @localizations + ")")) 
-    #@localizations.each do |k,o|
-    #  puts k, o, '-----------------'
-    #end
-    #abort()
+    items = JSON.load @localizations
+    Place.where( :person => self, :is_hq => 0 ).destroy_all
+    if items
+      items.each do |i, item|
+        Place.create(
+          :gmaps_address => item['name'], 
+          :gmaps_id => item['id'], 
+          :is_hq => 0, 
+          :person => self
+        )
+      end
+    end 
+  end
+
+  def save_langs
+    self.langs.destroy_all
+    if (@languages)
+      langList = @languages.split(',').map { |l| l.squish! } 
+      Lang.where(:name => langList).each do |l|
+        puts l.name
+        self.langs << l
+      end 
+    end 
   end
   
   def save_tags

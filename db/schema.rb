@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150529152603) do
+ActiveRecord::Schema.define(version: 20150601112049) do
 
   create_table "documents", force: :cascade do |t|
     t.string   "location",    limit: 255
@@ -47,6 +47,17 @@ ActiveRecord::Schema.define(version: 20150529152603) do
   end
 
   add_index "ideas", ["user_id"], name: "index_ideas_on_user_id", using: :btree
+
+  create_table "langs", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "langs_people", id: false, force: :cascade do |t|
+    t.integer "person_id", limit: 4, null: false
+    t.integer "lang_id",   limit: 4, null: false
+  end
 
   create_table "people", force: :cascade do |t|
     t.string   "name",            limit: 255

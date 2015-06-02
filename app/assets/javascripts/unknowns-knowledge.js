@@ -3,11 +3,37 @@ var loadfunc = function () {
     
     $(".taggable").tagit({
 	   	caseSensitive: false,
+		readOnly: $('.taggable').prop('readonly'),
 	  	autocomplete: {
 	  		delay: 1,
 			minLength: 3,
 			source: "/tags.json"
 		}
+	});
+    $('.languagable').tagit({
+	   	caseSensitive: false,
+		readOnly: $('.languagable').prop('readonly'),
+	  	autocomplete: {
+	  		delay: 1,
+			minLength: 2,
+			source: "/langs.json",
+		},
+    	beforeTagAdded: function (event, ui) {
+    		//console.log($(this).prop('readonly'));
+    		// prevent event except if we found it in the last autocomplete list
+    		//console.log('beforeAdded:' + ui.tagLabel, ui.duringInitialization);
+    		
+    		var preventEvent = true;
+    		if (!ui.duringInitialization) {
+    			console.log('check');
+	    		$('ul#ui-id-2 > li').each(function () {
+	    			if (ui.tagLabel == $(this).text()) {
+	    				preventEvent = false;
+	    			}
+	    		});
+		    	if (preventEvent) return false;
+    		}
+    	}
 	});
     
 	$('#showResultModal').on('show.bs.modal', function (event) {
@@ -58,7 +84,7 @@ var bind_link_values = function (elmType, elmId) {
 			change_button_style(event.target.id, 'Link', 'glyphicon-refresh', 'glyphicon-plus');
 			var err = true;
 			var jqxhr = $.ajax( '/search/linkElements?type=link&elm1Type=' + elmType + '&elm1Id=' + elmId + '&elm2Type=' + $('#' + event.target.id).data('target-element-type') + '&elm2Id=' + $('#' + event.target.id).data('target-element-id'))
-			.done(function(data) { if (data === "ok") err = false; console.log(err) })
+			.done(function(data) { if (data === "ok") err = false; })
 			.always(function () {
 				if (err === false) {
 					$('#' + event.target.id).removeClass('do-link').addClass('do-unlink');
@@ -74,7 +100,7 @@ var bind_link_values = function (elmType, elmId) {
 			change_button_style(event.target.id, 'Unlink', 'glyphicon-refresh', 'glyphicon-ok');
 			var err = 'true';
 			var jqxhr = $.ajax( '/search/linkElements?type=unlink&elm1Type=' + elmType + '&elm1Id=' + elmId + '&elm2Type=' + $('#' + event.target.id).data('target-element-type') + '&elm2Id=' + $('#' + event.target.id).data('target-element-id'))
-			.done(function(data) { if (data === "ok") err = false; console.log(err) })
+			.done(function(data) { if (data === "ok") err = false; })
 			.always(function () {
 				if (err === false) {
 					$('#' + event.target.id).removeClass('do-unlink').addClass('do-link');
@@ -89,7 +115,6 @@ var bind_link_values = function (elmType, elmId) {
 	});
 };
 var gmap_initalize = function () {
-	console.log('gmaps_init ok');
 	$('.has-places').keypress(function(e){
 	    if ( e.which == 13 ) {
 	    	$(this).val('');
@@ -106,19 +131,15 @@ var gmap_initalize = function () {
 			var multiple_target = $('#' + obj_id).data('multiple-list-id');
 			var multiple_format = $('#' + obj_id).data('multiple-format-name');
 			if (multiple_target && multiple_format) {
-				var nbitem = $('#' + multiple_target).children().length;
-				var elm_id = 'place_item_' + (nbitem + 1);
+				var elm_id = 'place_item_' + place.place_id;
 				var inputs = ' <a href="#" id="' + elm_id + '_removelink" data-remove-id="' + elm_id + '">remove</a>'
-					inputs += '<input type="text" name="' + multiple_format.replace('%i', nbitem+1).replace('%s', 'id') + '" value="' + place.place_id + '">';
-					inputs += '<input type="text" name="' + multiple_format.replace('%i', nbitem + 1).replace('%s', 'name') + '" value="' + place.formatted_address + '">'
+					inputs += '<input type="hidden" name="' + multiple_format.replace('%i', place.place_id).replace('%s', 'id') + '" value="' + place.place_id + '">';
+					inputs += '<input type="hidden" name="' + multiple_format.replace('%i', place.place_id).replace('%s', 'name') + '" value="' + place.formatted_address + '">'
 				$('#' + multiple_target).append('<li id="' + elm_id + '">' + place.formatted_address + inputs + '</li>');
 				$('#' + obj_id).val('');
 				$('#' + obj_id).focus();
 				// Bind click 
-				$('#' + elm_id + '_removelink').click(function ( evt ) {
-					evt.preventDefault();
-					$('#' + $(this).data('remove-id')).remove();
-				});
+				$('#' + elm_id + '_removelink').click(removelink);
 			}
 			else {
 				var target_id = $('#' + obj_id).data('target-id');
@@ -126,10 +147,16 @@ var gmap_initalize = function () {
 			}
 		});
 	});
+	$('#localizations > li > a').click(removelink)
 }
 
 $(document).on("page:load", loadfunc);
 $(document).ready(loadfunc);
+
+var removelink = function ( evt ) {
+	evt.preventDefault();
+	$('#' + $(this).data('remove-id')).remove();
+}
 
 // Utility methods 
 var test = function (attribute, value) {
