@@ -9,20 +9,20 @@ Bundler.require(*Rails.groups)
 module Knowledge
   class Application < Rails::Application
     
-    before_filter :set_charset_db
-    def set_charset_db
-      suppress(ActiveRecord::StatementInvalid) do
-        ActiveRecord::Base.connection.execute 'SET NAMES UTF8'
-      end
-    end
+    #before_filter :set_charset_db
+    #def set_charset_db
+    #  suppress(ActiveRecord::StatementInvalid) do
+    #    ActiveRecord::Base.connection.execute 'SET NAMES UTF8'
+    #  end
+    #end
     
-    after_filter :set_charset_header
-    def set_charset_header
-      content_type = headers["Content-Type"] || 'text/html'
-      if /^text\//.match(content_type)
-        headers["Content-Type"] = "#{content_type}; charset=utf-8" 
-      end
-    end
+    #after_filter :set_charset_header
+    #def set_charset_header
+    #  content_type = headers["Content-Type"] || 'text/html'
+    #  if /^text\//.match(content_type)
+    #    headers["Content-Type"] = "#{content_type}; charset=utf-8" 
+    #  end
+    #end
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
