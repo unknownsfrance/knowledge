@@ -1,4 +1,5 @@
-<%= javascript_include_tag('https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places') %>
+<%= javascript_include_tag('https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places', 'data-turbolinks-track' => true) %>
+
 <% readonly = readonly and readonly == 'true' %>
 <%= form_for(@person, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
   <%= f.hidden_field :category, :value => @person.category %>
