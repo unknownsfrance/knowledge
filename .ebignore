@@ -1,3 +1,8 @@
-/solr/*
-/log/*
+/solr/data
+/solr/pids
+/solr/default
+/solr/development
+/solr/production
+/solr/test
 
+/log/*
