@@ -1,6 +1,6 @@
 <%= @search.total.to_s + " results for " %> <i><b><%= @query %></b></i>
 
-<table class="table table-hover">
+<table class="table table-hover search-results">
 	<thead>
 	    <tr>
 	    	<th>Title</th>
@@ -12,7 +12,7 @@
 	<tbody>
 		<% @search.results.each do |result| %>
 		<tr>
-			<td><%= (result[:name]) ? result[:name] : result[:title] %></td>
+			<td><%= result.getTitle %></td>
 			<td><%= @users[result[:user_id]] %></td>
 			<td><%= result.getCat %></td>
 			<td>

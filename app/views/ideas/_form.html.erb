@@ -1,3 +1,5 @@
+
+
 <% readonly = readonly and readonly == 'true' %>
 <%= form_for(@idea, html: {class: 'form-horizontal', :multipart => true}) do |f| %>
   <% if @idea.errors.any? %>
@@ -43,7 +45,9 @@
   <% if not readonly %>
   <div class="form-group">
     <%= f.label :file, class: 'col-sm-2 control-label' %>
-  	<%= file_field 'upload', 'datafile' %>
+    <div class="col-sm-10">
+  		<%= file_field 'upload', 'datafile' %>
+  	</div>
   </div>
   <% end %>
   <% if @idea.persisted? %>

@@ -19,6 +19,10 @@ class Document < ActiveRecord::Base
   def getCat
     return self.category.capitalize
   end
+
+  def getTitle
+    return self.title
+  end
   
   def is_article?
     if self.category == 'article'

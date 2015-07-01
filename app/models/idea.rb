@@ -19,6 +19,10 @@ class Idea < ActiveRecord::Base
     return self.class.to_s.capitalize
   end
   
+  def getTitle
+    return self.name
+  end
+  
   def save_file upload
     DocumentsHelper.upload_file(upload, self)
   end

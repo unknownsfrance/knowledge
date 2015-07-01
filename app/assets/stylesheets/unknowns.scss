@@ -16,3 +16,7 @@ label.required:before {
     background-color: #428BCA;
     border-color: #357EBD;
 }
+
+table.search-results > tbody > tr > td {
+	vertical-align: middle
+}

@@ -1,6 +1,6 @@
 <%= @search.total.to_s + " results for " %> <i><b><%= @query %></b></i>
-<%= @associated %>
-<table class="table table-hover">
+
+<table class="table table-hover search-results">
 	<thead>
 	    <tr>
 	    	<th>Title</th>
@@ -15,7 +15,7 @@
 			item_id = result.getCat + '_' + result[:id].to_s
 		%>
 		<tr>
-			<td><%= result[:name] %></td>
+			<td><%= result.getTitle %></td>
 			<td><%= @users[result[:user_id]] %></td>
 			<td><%= result.getCat %></td>
 			<td>

@@ -29,6 +29,14 @@ class Person < ActiveRecord::Base
   def getCat
     return self.category.capitalize
   end
+
+  def getTitle
+    if self.is_person?
+      return self.firstname + " " + self.name
+    else 
+      return self.name
+    end
+  end
   
   def is_person?
     if self.category == 'person'
