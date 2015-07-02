@@ -23,7 +23,7 @@ class Person < ActiveRecord::Base
   has_many :elements_assoc, :as => :element1
   
   searchable do
-    text :name, :firstname, :description, :characteristics, :company_type, :contact_name, :tags
+    text :name, :firstname, :characteristics, :company_type, :contact_name, :tags
   end 
   
   def getCat

@@ -107,6 +107,6 @@ class PeopleController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def person_params
       params[:person][:localizations] = params[:person][:localizations].to_json
-      params.require(:person).permit(:name, :firstname, :profile, :url, :company_type, :characteristics, :description, :hq_name, :hq_id, :localizations, :contact_name, :files, :tags, :languages, :category)
+      params.require(:person).permit(:name, :firstname, :profile, :url, :company_type, :characteristics, :hq_name, :hq_id, :localizations, :contact_name, :files, :tags, :languages, :category)
     end
 end
