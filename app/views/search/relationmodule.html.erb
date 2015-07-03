@@ -1,4 +1,13 @@
-<%= @search.total.to_s + " results for " %> <i><b><%= @query %></b></i>
+<% 
+ctr = 0
+@search.results.each do |result| 
+	if result.class.to_s != @itemtype or result[:id].to_s != @itemid
+		ctr += 1
+	end 
+end
+%>
+<% results_info = ctr.to_s + " results" + ((not @query.empty?) ? " for <i><b>" + @query + "</b></i>" : "") %>
+<%= results_info.html_safe %>
 
 <table class="table table-hover search-results">
 	<thead>
@@ -13,6 +22,7 @@
 		<% i = 0
 		@search.results.each do |result|
 			item_id = result.getCat + '_' + result[:id].to_s
+			if result.class.to_s != @itemtype or result[:id].to_s != @itemid
 		%>
 		<tr>
 			<td><%= result.getTitle %></td>
@@ -24,7 +34,7 @@
 					button_class = 'do-unlink'
 					button_glyphicon = 'glyphicon-ok'
 					button_label = 'Unlink'
-				else
+				else 
 					button_class = 'do-link'
 					button_glyphicon = 'glyphicon-plus'
 					button_label = 'Link'
@@ -35,7 +45,9 @@
 				</button>
 			</td>
 		</tr>
-		<% i+=1
+		<% 
+			end 
+			i+=1
 		end %>
 </table>
 

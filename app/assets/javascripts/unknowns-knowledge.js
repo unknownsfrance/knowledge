@@ -46,7 +46,7 @@ var loadfunc = function () {
 	
 	$('#myModal').on('shown.bs.modal', function (event) {
 		var button = $(event.relatedTarget)
-		$('#myModal #myModalLabel').html('Assocation with ' + button.data('item-type') + ' (' + button.data('item-id') + ')')
+		$('#myModal #myModalLabel').html('Assocation with ' + button.data('item-title'))
 		$('#myModal #searchInput').focus();
 		
 		$('#myModal #searchFormAjax').submit(function( event ) {
@@ -68,7 +68,7 @@ var loadfunc = function () {
 	
 	$('#showPopin').on('shown.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
-		$('#showPopin #myModalLabel').html('Detail for ' + button.data('item-type') + ' (' + button.data('item-id') + ')')
+		$('#showPopin #myModalLabel').html('Detail for ' + button.data('item-type') + ': ' + button.data('item-title'))
 	});
 	$('#showPopin').on('hidden.bs.modal', function () {
 		$(this).removeData('bs.modal');

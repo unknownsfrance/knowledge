@@ -16,10 +16,11 @@
 			<td><%= @users[result[:user_id]] %></td>
 			<td><%= result.getCat %></td>
 			<td>
-				<a href="<%= url_for controller: result.class.to_s.pluralize.downcase, action: "show", id: result[:id], params: { ajax: 'true', no_search_bar: 'true' } %>" role="button" class="btn btn-default" data-toggle="modal" data-target="#showPopin" data-item-type="<%= result.class.to_s %>" data-item-id="<%= result[:id].to_s %>">Show</a>
+				<a href="<%= url_for controller: result.class.to_s.pluralize.downcase, action: "show", id: result[:id], params: { ajax: 'true', no_search_bar: 'true' } %>" role="button" class="btn btn-default" data-toggle="modal" data-target="#showPopin" data-item-title="<%= result.getTitle %>" data-item-type="<%= result.class.to_s %>" data-item-id="<%= result[:id].to_s %>">Show</a>
 				<a href="<%= url_for controller: result.class.to_s.pluralize.downcase, action: "edit", id: result[:id] %>" type="button" class="btn btn-primary">Edit</a>
 			</td>
 		</tr>
 		<% end %>
+	</tbody>
 </table>
 <%= render 'components/ajax_modal', :modal_title => 'showPopin' %>

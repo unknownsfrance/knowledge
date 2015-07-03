@@ -49,9 +49,14 @@
   <div class="field form-group">
   	<label class="col-sm-2 control-label required">Specificities</label>
     <div class="col-sm-10">
-    	<%= f.text_area :characteristics, class: 'form-control', readonly: readonly, :required => true  %>
+    	<% if readonly %>
+    		<p class="readonly-textarea"><%= @person.characteristics %></p>
+    	<% else %>
+    		<%= f.text_area :characteristics, class: 'form-control', readonly: readonly, :required => true  %>
+   		<% end %>
    	</div>
   </div>
+  
   <% 
   gm_id = ''
   gm_label = ''
@@ -154,7 +159,7 @@
 	  		end
 	  	end %>
 	  	<% if not readonly %>
-	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @person.class.to_s %>" data-item-id="<%= @person[:id].to_s %>">Manage Relations</a>
+	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-title="<%= @person.getTitle %>" data-item-type="<%= @person.class.to_s %>" data-item-id="<%= @person[:id].to_s %>">Manage Relations</a>
 		<% end %>
 	</div>
   </div>
@@ -168,8 +173,8 @@
   <% else %>
   	<div class="actions form-group">
     <div class="col-sm-offset-2 col-sm-10">
-    	<%= link_to 'Edit', edit_person_path, class: 'btn btn-default' %>
-    	<%= link_to 'Delete', person_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    	<%= link_to 'Edit', edit_person_path, class: 'btn btn-primary' %>
+    	<%= link_to 'Delete', person_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default' %>
     </div>
   </div>
   <% end %>

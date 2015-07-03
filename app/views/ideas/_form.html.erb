@@ -68,7 +68,7 @@
 	  		end
 	  	end %>
 	  	<% if not readonly %>
-	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-type="<%= @idea.class.to_s %>" data-item-id="<%= @idea[:id].to_s %>">Manage Relations</a>
+	  		<a href="/search?ajax=true" role="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" data-item-title="<%= @idea.getTitle %>" data-item-type="<%= @idea.class.to_s %>" data-item-id="<%= @idea[:id].to_s %>">Manage Relations</a>
 		<% end %>
 	</div>
   </div>
@@ -82,8 +82,8 @@
   <% else %>
   	<div class="actions form-group">
     <div class="col-sm-offset-2 col-sm-10">
-    	<%= link_to 'Edit', edit_idea_path, class: 'btn btn-default' %>
-    	<%= link_to 'Delete', idea_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    	<%= link_to 'Edit', edit_idea_path, class: 'btn btn-primary' %>
+    	<%= link_to 'Delete', idea_path, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default' %>
     </div>
   </div>
   <% end %>
