@@ -69,6 +69,12 @@ var loadfunc = function () {
 	$('#showPopin').on('shown.bs.modal', function (event) {
 		var button = $(event.relatedTarget);
 		$('#showPopin #myModalLabel').html('Detail for ' + button.data('item-type') + ': ' + button.data('item-title'))
+		if ($('#languages').length == 1) {
+			$('#languages').val(cleanStr($('#languages').val()));
+		}
+		if ($('#tags').length == 1) {
+			$('#tags').val(cleanStr($('#tags').val()));
+		}
 	});
 	$('#showPopin').on('hidden.bs.modal', function () {
 		$(this).removeData('bs.modal');
@@ -152,6 +158,9 @@ $(document).ready(loadfunc);
 var removelink = function ( evt ) {
 	evt.preventDefault();
 	$('#' + $(this).data('remove-id')).remove();
+}
+var cleanStr = function ( str ) {
+	return str.replace(/\s\s+/g, ' ').trim().replace(/,(\s+)?$/, '');
 }
 
 // Utility methods 
