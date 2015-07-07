@@ -7,5 +7,4 @@
 
 . /opt/elasticbeanstalk/support/envvars
 cd $EB_CONFIG_APP_CURRENT
-su -c "chmod 777 -R /solr /tmp /log"
 su -c "RAILS_ENV=production rake sunspot:reindex" $EB_CONFIG_APP_USER
